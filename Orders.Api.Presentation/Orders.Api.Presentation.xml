@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>Orders.Api.Presentation</name>
+  </assembly>
+  <members>
+    <member name="M:Orders.Api.Presentation.Controllers.OrdersController.GetOrders">
+      <summary>
+        Gets the list of all samples
+      </summary>
+      <returns>The sample list</returns>
+    </member>
+    <member name="M:Orders.Api.Presentation.Controllers.OrdersController.PlaceOrder(Shared.DataTransferObjects.SampleDTO)">
+      <summary>
+        Creates a newly created sample
+      </summary>
+      <param name="Orders"></param>
+      <returns>A newly created sample</returns>
+      <response code="201">Returns the newly created item</response>
+      <response code="400">If the item is null</response>
+      <response code="422">If the model is invalid</response>
+    </member>
+  </members>
+</doc>
