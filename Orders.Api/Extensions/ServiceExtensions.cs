@@ -61,9 +61,14 @@ namespace Orders.Api.Extensions
                 .AddDotNetEnv(".env", LoadOptions.TraversePath()) // Simply add the DotNetEnv configuration source!
                 .Build();
             
-        // public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
-        //     services.AddDbContext<RepositoryContext>(opts => opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b => b.MigrationsAssembly("PPS.Api")));
+        public static void ConfigureMySqlContext(this IServiceCollection services, IConfiguration configuration) {
+            var connectionString = configuration.GetConnectionString("mysqlConnection")
+                ?? throw new InvalidOperationException("please Set your mysqlConnection string");
 
+            var serverVersion = ServerVersion.AutoDetect(connectionString);
+            services.AddDbContext<RepositoryContext>(opts => opts.UseMySql(connectionString, serverVersion, b => b.MigrationsAssembly("Orders.Api")));
+
+        }
         public static IMvcBuilder AddCustomCSVFormatter(this IMvcBuilder builder) => builder.AddMvcOptions(config => config.OutputFormatters.Add(new
             CsvOutputFormatter()));
 

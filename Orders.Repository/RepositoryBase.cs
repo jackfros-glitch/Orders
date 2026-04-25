@@ -23,8 +23,11 @@ namespace Orders.Repository
 
         public void Create(T entity) => RepositoryContext.Set<T>().Add(entity);
 
+        public void CreateRange(IEnumerable<T> entities) => RepositoryContext.Set<T>().AddRange(entities);
+
         public void Update(T entity) => RepositoryContext.Set<T>().Update(entity);
 
         public void Delete(T entity) => RepositoryContext.Set<T>().Remove(entity);
+
     }
 }

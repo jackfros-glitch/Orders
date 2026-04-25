@@ -24,6 +24,7 @@ namespace Orders.Repository
         public async Task<Product> GetProductAsync(Guid Id, bool trackChanges) => await FindByCondition(p => p.Id.Equals(Id), trackChanges).SingleOrDefaultAsync();
 
         public async Task<IEnumerable<Product>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges) => await FindByCondition(x => ids.Contains(x.Id), trackChanges).ToListAsync();
-        
+
+        public void AddRange(IEnumerable<Product> products) => CreateRange(products);
     } 
 }

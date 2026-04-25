@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Options;
 using Orders.Contracts;
 
+
+Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -19,7 +22,6 @@ builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
 builder.Services.ConfigureLoggerService();
 builder.Services.ConfigureEnvironmentVariables();
-builder.Services.ConfigureRepositoryManager();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -54,6 +56,9 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
 });
+
+builder.Services.ConfigureMySqlContext(builder.Configuration);
+builder.Services.ConfigureRepositoryManager();
 
 // builder.Services.AddScoped<ValidationFilterAttribute>();
 // builder.Services.AddScoped<ValidateMediaTypeAttribute>();
@@ -93,6 +98,7 @@ app.UseSwaggerUI(s =>
 });
 
 app.MapControllers();
+await app.SeedProducts();
 
 
 // Configure the HTTP request pipeline.

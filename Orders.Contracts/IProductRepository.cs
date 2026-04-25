@@ -9,5 +9,7 @@ namespace Orders.Contracts
         void CreateProduct(Product product);
         Task<IEnumerable<Product>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges);
         void DeleteProduct(Product product);
+
+        void AddRange(IEnumerable<Product> products);
     }
 }
