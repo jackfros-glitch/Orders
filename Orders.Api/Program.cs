@@ -100,7 +100,7 @@ app.UseSwaggerUI(s =>
 });
 
 app.MapControllers();
-await app.SeedProducts();
+// await app.SeedProducts();
 
 
 // Configure the HTTP request pipeline.

@@ -41,6 +41,19 @@ public class OrderService : IOrderService
     }
 
 
+    public async Task<Order> GetOrder(Guid orderId)
+    {
+        var order = await _repositoryManager.Order.GetOrderAsync(orderId, eagerLoad: true);
+        if (order is null)
+        {
+            throw new ProductNotFoundException(orderId);
+        }
+        return order;
+    } 
+     public Task<OrderDto> PlaceOrder(Guid userId, PlaceOrderDto order)
+    {
+        throw new NotImplementedException();
+    }
     public async Task<OrderDto> CreateOrder(CreateOrderRequestDto orderRequest)
     {
         var productIds = orderRequest.Products.Select(p => p.ProductId).ToList();
@@ -160,8 +173,5 @@ public class OrderService : IOrderService
     }
 
 
-    public Task<OrderDto> PlaceOrder(Guid userId, PlaceOrderDto order)
-    {
-        throw new NotImplementedException();
-    }
+   
 }

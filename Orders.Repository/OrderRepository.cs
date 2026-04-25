@@ -21,7 +21,8 @@ namespace Orders.Repository
         		p.Id).Include(o => o.OrderItems)
             .ThenInclude(oi => oi.Product).ToListAsync();
 
-        public async Task<Order> GetOrderAsync(Guid Id, bool trackChanges) => await FindByCondition(p => p.Id.Equals(Id), trackChanges).SingleOrDefaultAsync();
+        public async Task<Order> GetOrderAsync(Guid Id, bool trackChanges = false, bool eagerLoad = false) => !eagerLoad ? await FindByCondition(p => p.Id.Equals(Id), trackChanges)
+                                        .SingleOrDefaultAsync() : await FindByCondition(p => p.Id.Equals(Id), trackChanges).Include(o => o.OrderItems).ThenInclude(oi=> oi.Product).SingleOrDefaultAsync() ;
 
         public async Task<IEnumerable<Order>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges) => await FindByCondition(x => ids.Contains(x.Id), trackChanges).ToListAsync();
 
