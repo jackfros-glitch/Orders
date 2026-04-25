@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AspNetCoreRateLimit" Version="5.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="Marvin.Cache.Headers" Version="7.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.5" />
@@ -31,6 +32,7 @@
     <ProjectReference Include="..\Orders.Repository\Orders.Repository.csproj" />
     <ProjectReference Include="..\Orders.Shared\Orders.Shared.csproj" />
     <ProjectReference Include="..\Orders.Entities\Orders.Entities.csproj" />
+    <ProjectReference Include="..\Orders.Service\Orders.Service.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

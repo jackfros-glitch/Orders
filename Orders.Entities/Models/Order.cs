@@ -10,9 +10,9 @@ public class Order
     public Guid Id { get; set; } = Guid.NewGuid();
 
     [Required]
-    public Guid CustomerId { get; set; } 
+    public Guid? CustomerId { get; set; } 
 
-    public Customer Customer { get; set; } = null!;
+    public Customer? Customer { get; set; } = null!;
 
     [Column(TypeName = "decimal(18,2)")]
     public decimal TotalAmount { get; set; }

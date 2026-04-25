@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Orders.Service.Contracts;
 using Orders.Shared.DataTransferObjects;
 using Marvin.Cache.Headers;
+using Orders.Entities.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Orders.Api.Presentation.Controllers
 {
@@ -18,10 +20,21 @@ namespace Orders.Api.Presentation.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Gets all orders in the system
+        /// </summary>
+        /// <returns>A list of orders</returns>
+        /// <response code="200">Returns the list of orders</response>
+        /// <response code="500">Internal server error</response>
+        [HttpGet]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrderDto>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet]
         public async Task<IActionResult> GetOrders()
         {
-            throw new NotImplementedException();
+            var ordersDto = await _service.OrderService.GetOrders();
+            return Ok(ordersDto);
         }
 
         
@@ -30,14 +43,15 @@ namespace Orders.Api.Presentation.Controllers
         [HttpCacheValidation(MustRevalidate = false)]
         public async Task<IActionResult> GetOrder(Guid id)
         {
-            throw new NotImplementedException();
+           throw new NotImplementedException();
         }
 
         
         [HttpPost]
-        public async Task<IActionResult> PlaceOrder()
+        public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequestDto orderRequestDto)
         {
-            throw new NotImplementedException();
+            var orderDto = await _service.OrderService.CreateOrder(orderRequestDto);
+            return Ok(orderDto);
         }
 
         

@@ -35,6 +35,8 @@ builder.Services.ConfigureHttpCacheHeaders();
 builder.Services.AddMemoryCache();
 builder.Services.ConfigureRateLimitingOptions();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.ConfigureServiceManager();
 
 builder.Services.AddAuthentication();
 builder.Services.ConfigureSwagger();
@@ -44,7 +46,7 @@ builder.Services.AddControllers(config =>
     config.RespectBrowserAcceptHeader = true;
     config.ReturnHttpNotAcceptable = true;
     config.InputFormatters.Insert(0, GetJsonPatchInputFormatter());
-    config.CacheProfiles.Add("120SecondsDuration", new CacheProfile { Duration = 120 });
+    // config.CacheProfiles.Add("120SecondsDuration", new CacheProfile { Duration = 120 });
 }).AddXmlDataContractSerializerFormatters()
 .AddCustomCSVFormatter()
 .AddApplicationPart(typeof(Orders.Api.Presentation.AssemblyReference).Assembly);

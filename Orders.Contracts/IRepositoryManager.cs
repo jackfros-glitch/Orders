@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.Storage;
 namespace Orders.Contracts
 {
     public interface IRepositoryManager
@@ -7,5 +8,6 @@ namespace Orders.Contracts
 	    IOrderItemRepository OrderItem { get;}
         ICustomerRepository Customer { get; }
         Task SaveAsync();
+        Task<IDbContextTransaction> BeginTransactionAsync();
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Orders.Repository;
 
@@ -10,9 +11,11 @@ using Orders.Repository;
 namespace Orders.Api.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20260425193445_NullableCustomer")]
+    partial class NullableCustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +55,7 @@ namespace Orders.Api.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("CustomerId")
-                        .IsRequired()
+                        .IsRequired(false)
                         .HasColumnType("char(36)");
 
                     b.Property<int>("Status")
@@ -65,8 +68,6 @@ namespace Orders.Api.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
 
                     b.ToTable("Orders");
                 });
@@ -134,8 +135,8 @@ namespace Orders.Api.Migrations
                     b.HasOne("Orders.Entities.Models.Customer", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired(false);
 
                     b.Navigation("Customer");
                 });

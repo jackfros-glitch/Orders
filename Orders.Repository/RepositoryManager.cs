@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.Storage;
 using Orders.Contracts;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,9 @@ namespace Orders.Repository
         public ICustomerRepository Customer => _customerRepository.Value;
 
         public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
+
+        public async Task<IDbContextTransaction> BeginTransactionAsync() => await _repositoryContext.Database.BeginTransactionAsync();
+
         
     }
 }

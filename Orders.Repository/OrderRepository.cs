@@ -18,7 +18,8 @@ namespace Orders.Repository
 
 
         public async Task<IEnumerable<Order>> GetAllOrdersAsync(bool trackChanges)=> await FindAll(trackChanges).OrderBy(p =>
-        		p.Id).ToListAsync();
+        		p.Id).Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.Product).ToListAsync();
 
         public async Task<Order> GetOrderAsync(Guid Id, bool trackChanges) => await FindByCondition(p => p.Id.Equals(Id), trackChanges).SingleOrDefaultAsync();
 

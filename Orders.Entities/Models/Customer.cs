@@ -18,5 +18,5 @@ public class Customer
     // Hashed Password
     public string PasswordHash { get; set; }
 
-    public ICollection<Order> Orders { get; set; } = new List<Order>();
+    public ICollection<Order>? Orders { get; set; } = new List<Order>();
 }

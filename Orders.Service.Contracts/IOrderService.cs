@@ -7,5 +7,6 @@ public interface IOrderService
     // Task<OrderDto> GetOrder(Guid orderId);
     Task<OrderDto> PlaceOrder(Guid userId, PlaceOrderDto order);
 
-    Task<List<OrderDto>> GetOrders();
+    Task<IEnumerable<OrderDto>> GetOrders();
+    Task<OrderDto> CreateOrder(CreateOrderRequestDto orderRequest);
 }
