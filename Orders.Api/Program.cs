@@ -19,6 +19,7 @@ builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
 builder.Services.ConfigureLoggerService();
 builder.Services.ConfigureEnvironmentVariables();
+builder.Services.ConfigureRepositoryManager();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -47,7 +48,6 @@ builder.Services.AddControllers(config =>
 .AddApplicationPart(typeof(Orders.Api.Presentation.AssemblyReference).Assembly);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
@@ -93,6 +93,7 @@ app.UseSwaggerUI(s =>
 });
 
 app.MapControllers();
+
 
 // Configure the HTTP request pipeline.
 

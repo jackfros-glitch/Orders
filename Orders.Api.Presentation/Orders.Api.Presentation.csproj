@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Marvin.Cache.Headers" Version="7.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Orders.Service.Contracts\Orders.Service.Contracts.csproj" />
+    <ProjectReference Include="..\Orders.Shared\Orders.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
