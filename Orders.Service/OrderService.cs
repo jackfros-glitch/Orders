@@ -79,7 +79,7 @@ public class OrderService : IOrderService
         _repositoryManager.Order.CreateOrder(order);
         CreateOrderItems(order, orderRequest.Products, products);
 
-        UpdateProductStock(orderRequest.Products, productLookup);
+        // UpdateProductStock(orderRequest.Products, productLookup);
 
         var total = orderRequest.Products.Sum(p =>
         {
@@ -92,10 +92,6 @@ public class OrderService : IOrderService
 
         await transaction.CommitAsync();
         var orderDto = _mapper.Map<OrderDto>(order);
-        Console.WriteLine(JsonSerializer.Serialize(orderDto, new JsonSerializerOptions
-        {
-            WriteIndented = true
-        }));
         return orderDto; // map to OrderDto as needed
     }
 
