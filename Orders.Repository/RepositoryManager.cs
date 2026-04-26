@@ -15,7 +15,9 @@ namespace Orders.Repository
         private readonly Lazy<IOrderRepository> _orderRepository;
         private readonly Lazy<IOrderItemRepository> _orderItemRepository;
         private readonly Lazy<ICustomerRepository> _customerRepository;
-      
+        private readonly Lazy<IPaymentReferenceRepository> _paymentRefernceRepository;
+        private readonly Lazy<IPaymentRepository> _paymentRepository;
+
         public RepositoryManager(RepositoryContext repositoryContext)
         {
             _repositoryContext = repositoryContext;
@@ -23,6 +25,8 @@ namespace Orders.Repository
             _orderRepository = new Lazy<IOrderRepository>(() => new OrderRepository(repositoryContext));
             _orderItemRepository = new Lazy<IOrderItemRepository>(() => new OrderItemRepository(repositoryContext));
             _customerRepository = new Lazy<ICustomerRepository>(() => new CustomerRepository(repositoryContext));
+            _paymentRefernceRepository = new Lazy<IPaymentReferenceRepository>( ()=> new PaymentReferenceRepository(repositoryContext));
+            _paymentRepository = new Lazy<IPaymentRepository>( ()=> new PaymentRepository(repositoryContext));
 
         }
 
@@ -33,6 +37,10 @@ namespace Orders.Repository
         public IOrderItemRepository OrderItem =>  _orderItemRepository.Value;
 
         public ICustomerRepository Customer => _customerRepository.Value;
+
+        public IPaymentReferenceRepository PaymentReference => _paymentRefernceRepository.Value;
+
+        public IPaymentRepository Payment => _paymentRepository.Value;
 
         public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
 

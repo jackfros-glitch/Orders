@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using Orders.Entities.Exceptions;
 using Microsoft.VisualBasic;
 using System.Text.Json;
+using Orders.Shared.Enums;
 
 namespace Orders.Service;
 
@@ -50,9 +51,45 @@ public class OrderService : IOrderService
         }
         return order;
     } 
-     public Task<OrderDto> PlaceOrder(Guid userId, PlaceOrderDto order)
+    public async Task PlaceOrder(Order order)
     {
-        throw new NotImplementedException();
+        // trigger the placeOrder(
+        // validate the stock
+        // update the stock 
+        // update the order status )
+        await using var transaction = await _repositoryManager.BeginTransactionAsync();
+        try
+        {
+            // var order = await _repositoryManager.Order.GetOrderAsync(orderId);
+            // if (order is null) throw new OrderNotFoundException(orderId);
+            var productIds = order.OrderItems.Select(oi=> oi.ProductId);
+            var products = await _repositoryManager.Product.GetByIdsAsync(productIds, true);
+            // validate stock
+            foreach (var product in products)
+            {
+                // Find the matching line item from the request
+                var orderItem = order.OrderItems
+                    .FirstOrDefault(item => item.ProductId == product.Id);
+
+                if (orderItem is null) continue;
+
+                if (orderItem.Quantity > product.Quantity)
+                    throw new ProductBadRequestException(
+                        $"The quantity selected for '{product.Name}' ({orderItem.Quantity}) " +
+                        $"exceeds available stock ({product.Quantity}).");
+            }
+            // var productLookup = products.ToDictionary(p => p.Id);
+            await UpdateProductStock(order.OrderItems);
+            order.Status = OrderStatus.Placed;
+            await _repositoryManager.SaveAsync();
+            await transaction.CommitAsync();
+        }
+        catch(Exception e)
+        {
+            await transaction.RollbackAsync(); // anything failed — undo everything
+            throw new Exception(e.Message);
+        }
+        
     }
     public async Task<OrderDto> CreateOrder(CreateOrderRequestDto orderRequest)
     {
@@ -61,7 +98,7 @@ public class OrderService : IOrderService
 
         ValidateProductsExist(productIds, products);
         ValidateProductQuantities(orderRequest.Products, products);
-        var productLookup = products.ToDictionary(p => p.Id);
+        // var productLookup = products.ToDictionary(p => p.Id);
 
         using var transaction = await _repositoryManager.BeginTransactionAsync();
 
@@ -96,19 +133,25 @@ public class OrderService : IOrderService
     }
 
 
-    private void UpdateProductStock(
-        IEnumerable<ProductRequestDto> requestedItems,
-        Dictionary<Guid, Product> productLookup)
+    private async Task UpdateProductStock(
+        IEnumerable<OrderItem> requestedItems)
     {
         foreach (var item in requestedItems)
         {
-            var product = productLookup[item.ProductId];
+            // var product = productLookup[item.ProductId];
 
-            if (product.Quantity < item.Quantity)
+            // if (product.Quantity < item.Quantity)
+            //     throw new ProductBadRequestException(
+            //         $"Insufficient stock for {product.Name}");
+
+            // product.Quantity -= item.Quantity;
+            var success = await _repositoryManager.Product
+                .DecrementStockAsync(item.ProductId, item.Quantity);
+
+            if (!success)
                 throw new ProductBadRequestException(
-                    $"Insufficient stock for {product.Name}");
+                    $"'{item.ProductId}' is out of stock or unavailable.");
 
-            product.Quantity -= item.Quantity;
         }
     }
     private void ValidateProductsExist(

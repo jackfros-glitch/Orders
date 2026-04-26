@@ -25,6 +25,19 @@ namespace Orders.Repository
 
         public async Task<IEnumerable<Product>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges) => await FindByCondition(x => ids.Contains(x.Id), trackChanges).ToListAsync();
 
+        public async Task<bool> DecrementStockAsync(Guid productId, int quantity)
+        {
+            var rowsAffected = await RepositoryContext.Database.ExecuteSqlRawAsync(
+                @"UPDATE Products 
+                SET Quantity = Quantity - {0}
+                WHERE Id = {1} 
+                AND Quantity >= {2}",
+                quantity, productId, quantity
+            );
+
+            return rowsAffected > 0; // false = out of stock
+        } 
+
         public void AddRange(IEnumerable<Product> products) => CreateRange(products);
     } 
 }

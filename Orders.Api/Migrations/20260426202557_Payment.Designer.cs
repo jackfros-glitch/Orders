@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Orders.Repository;
 
@@ -10,9 +11,11 @@ using Orders.Repository;
 namespace Orders.Api.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20260426202557_Payment")]
+    partial class Payment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,9 +116,6 @@ namespace Orders.Api.Migrations
                     b.Property<Guid>("PaymentReferenceId")
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PaymentReferenceId")
@@ -136,7 +136,7 @@ namespace Orders.Api.Migrations
                     b.Property<Guid?>("OrderId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Reference")
+                    b.Property<Guid>("Referece")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");

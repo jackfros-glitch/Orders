@@ -7,6 +7,10 @@ namespace Orders.Contracts
     	IOrderRepository Order {get;}
 	    IOrderItemRepository OrderItem { get;}
         ICustomerRepository Customer { get; }
+
+        IPaymentReferenceRepository PaymentReference { get; }
+
+        IPaymentRepository Payment { get; }
         Task SaveAsync();
         Task<IDbContextTransaction> BeginTransactionAsync();
     }

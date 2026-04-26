@@ -10,6 +10,7 @@ namespace Orders.Contracts
         Task<IEnumerable<Product>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges);
         void DeleteProduct(Product product);
 
+        Task<bool> DecrementStockAsync(Guid productId, int quantity);
         void AddRange(IEnumerable<Product> products);
     }
 }

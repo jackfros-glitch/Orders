@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Orders.Repository;
 
@@ -10,9 +11,11 @@ using Orders.Repository;
 namespace Orders.Api.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20260426155732_PaymentRef")]
+    partial class PaymentRef
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,32 +101,6 @@ namespace Orders.Api.Migrations
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("Orders.Entities.Models.Payment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<Guid>("PaymentReferenceId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PaymentReferenceId")
-                        .IsUnique();
-
-                    b.ToTable("Payment");
-                });
-
             modelBuilder.Entity("Orders.Entities.Models.PaymentReference", b =>
                 {
                     b.Property<Guid>("Id")
@@ -136,7 +113,7 @@ namespace Orders.Api.Migrations
                     b.Property<Guid?>("OrderId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Reference")
+                    b.Property<Guid>("Referece")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
@@ -207,17 +184,6 @@ namespace Orders.Api.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Orders.Entities.Models.Payment", b =>
-                {
-                    b.HasOne("Orders.Entities.Models.PaymentReference", "PaymentReference")
-                        .WithOne("Payment")
-                        .HasForeignKey("Orders.Entities.Models.Payment", "PaymentReferenceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PaymentReference");
-                });
-
             modelBuilder.Entity("Orders.Entities.Models.PaymentReference", b =>
                 {
                     b.HasOne("Orders.Entities.Models.Order", "Order")
@@ -237,11 +203,6 @@ namespace Orders.Api.Migrations
                     b.Navigation("OrderItems");
 
                     b.Navigation("PaymentReferences");
-                });
-
-            modelBuilder.Entity("Orders.Entities.Models.PaymentReference", b =>
-                {
-                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("Orders.Entities.Models.Product", b =>

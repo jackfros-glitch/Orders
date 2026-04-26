@@ -33,7 +33,12 @@ namespace Orders.Api
 
             CreateMap<CreateOrderRequestDto, Order>();
             CreateMap<ProductRequestDto, OrderItem>();
+            
+            CreateMap<PaymentReference, PaymentReferenceDto>();
 
+            CreateMap<Payment, PaymentDto>()
+                .ForMember(dest => dest.Status,
+                    opt => opt.MapFrom(src => src.Status.ToString()));
             
         }
     }
