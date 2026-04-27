@@ -55,14 +55,7 @@ public class PaymentService : IPaymentService
     }
 
     public async Task<Payment> Pay(Guid reference)
-    {
-        // pull the reference
-        // pull the Order
-        // trigger the placeOrder(
-        // validate the stock
-        // update the stock 
-        // update the order status )
-        
+    { 
 
         var paymentRefence = await _repositoryManager.PaymentReference.GetPaymentReferenceAsync(reference, true, true);
         var existingPayment = await _repositoryManager.Payment.GetPaymentByRefIdAsync(paymentRefence.Id, false);
